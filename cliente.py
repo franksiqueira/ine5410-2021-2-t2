@@ -59,11 +59,11 @@ class Cliente(Thread):
         espacos = (16 - len(self.name)) * ' '
         print('['+ self.name + '] ' + espacos + mensagem + '\n', end='')
 
-    # Representação do nadador nas mensagens de log
+    # Representação do cliente nas mensagens de log
     def __repr__(self):
         return self.name
 
-    # Comportamento do nadador
+    # Comportamento do cliente
     def run(self):
         '''
             NÃO ALTERE A ORDEM DAS CHAMADAS ABAIXO.
@@ -76,164 +76,293 @@ class Cliente(Thread):
         self.log("Entrou no Winter Park.")
 
         self.pegar_equip_protecao()
-        if randint(1,3) == 1:
-            # Vai para pista de patinação
-            self.pegar_patins()
-            self.aguardar_lugar_pista()
-            self.patinar()
+
+        while True:
             if randint(1,3) == 1:
+                # Vai para pista de patinação
+                self.pegar_patins()
+                self.aguardar_lugar_pista()
+                while True:
+                    self.patinar()
+                    if randint(1,3) == 1:
+                        break
+                self.devolver_patins()
+            else:
+                # Pega o teleférico para subir a montanha
+                self.pegar_teleferico()
+                self.aguardar_subida()
+                if randint(1,5) == 1:
+                    # Desce de teleférico
+                    self.aguardar_descida()
+                    self.sair_teleferico()
+                else:
+                    self.sair_teleferico()
+                    if randint(1,2) == 1:
+                    # Vai para o lado sul - esqui e snowboard
+                        if randint(1,2) == 1:
+                            # Esquiar
+                            self.pegar_esquis()
+                            while True:
+                                self.aguardar_lugar_montanha_sul()  
+                                self.descer_esquiando()  
+                                if randint(1,2) == 1:
+                                    self.pegar_teleferico()
+                                    self.aguardar_subida()
+                                else:
+                                    self.devolver_esquis()
+                                    break
+                        else:
+                            # Sandboard
+                            self.pegar_snowboard()
+                            while True:
+                                self.aguardar_lugar_montanha_sul()  
+                                self.descer_snowboard()   
+                                if randint(1,2) == 1:
+                                    self.pegar_teleferico()
+                                    self.aguardar_subida()
+                                else:
+                                    self.devolver_snowboard()
+                                    break                                             
+                    else:
+                        # Vai para o lado norte - trenó e bobsled
+                        if randint(1,3) == 1:
+                            # Bobsled
+                            self.formar_dupla()
+                            self.pegar_bobsled()
+                            while True:
+                                self.aguardar_pista_bobsled()  
+                                self.descer_bobsled()  
+                                self.devolver_bobsled()
+                                if randint(1,2) == 1:
+                                    self.pegar_teleferico()
+                                    self.aguardar_subida()
+                                else:
+                                    break                        
+                        else:
+                            # Trenó   
+                            self.pegar_treno()
+                            while True:
+                                self.aguardar_pista_treno()  
+                                self.descer_treno()  
+                                self.devolver_treno()
+                                if randint(1,2) == 1:
+                                    self.pegar_teleferico()
+                                    self.aguardar_subida()
+                                else:
+                                    break                   
 
-        self.pegar_()
-        self.tomar_ducha()
-        self.sair_vestiario()
-        if self.aprendiz:
-            self.pegar_prancha()
-        self.pegar_raia()
-        self.nadar()
-        self.liberar_raia()
-        if self.aprendiz:
-            self.devolver_prancha()        
-        self.entrar_vestiario()
-        self.tomar_ducha()
-        self.liberar_armario()
-        self.trocar_roupa()
-        self.sair_vestiario()
+            if randint(1,5) == 1: 
+                # Vai embora
+                self.log("Saiu do Winter Park.")
+                return
 
-        self.log("Saiu do Winter Park.")
-
-    # Nadador entra no vestiário correspondente ao seu gênero
-    def entrar_vestiario(self):
+    # Cliente pega um par de patins para usar a pista de patinação
+    def pegar_equip_protecao(self):
         '''
             IMPLEMENTE AQUI:
-            O nadador deve entrar no vestiário correspondente ao seu gênero.
+            O cliente pega um kit com os equipamentos de proteção.
         '''
-        if self.genero == 'F':
-            with init.lock_vest_fem:
-                init.cont_vest_fem += 1
-        self.log("Entrou no vestiário")
-
-    # Nadador sai do vestiário         
-    def sair_vestiario(self):
-        '''
-            IMPLEMENTE AQUI:
-            O nadador deve sair do vestiário.
-        '''
-        if self.genero == 'F':
-            with init.lock_vest_fem:
-                init.cont_vest_fem -= 1
-                if init.cont_vest_fem == 0:
-                    init.vest_fem_vazio.notify()
-        self.log("Saiu do vestiário")
-
-    # Nadador troca de roupa 
-    def trocar_roupa(self):
-        self.log("Trocando de roupa...")
-        sleep(randint(init.tempo_troca_min, init.tempo_troca_max) * init.unidade_de_tempo)
-
-    # Nadador encontra um armário e guarda seus pertences
-    def pegar_armario(self):
-        '''
-            IMPLEMENTE AQUI:
-            O nadador deve encontrar um armário para guardar os seus pertences.
-            O armário precisa estar no vestiário correspondente ao seu gênero.
-        '''        
-        if self.genero == 'F':
-            init.armarios_vest_fem.acquire()
-        else:
-            init.armarios_vest_masc.acquire()
-        self.log("Pegou um armário")
-
-    # Nadador libera o armário
-    def liberar_armario(self):
-        '''
-            IMPLEMENTE AQUI:
-            O nadador deve liberar o armário no qual guardou os seus pertences.
-        '''        
-        if self.genero == 'F':
-            init.armarios_vest_fem.release()
-        else:
-            init.armarios_vest_masc.release()
-        self.log("Liberou um armário")
-
-    # Nadador toma uma ducha antes ou depois de nadar
-    def tomar_ducha(self):
-        '''
-            IMPLEMENTE AQUI:
-            Encontrar um box livre para tomar ducha.
-        '''
-        if self.genero == 'F':
-            init.duchas_vest_fem.acquire()
-        else:
-            init.duchas_vest_masc.acquire()        
-        self.log("Tomando uma ducha...")
-        sleep(randint(init.tempo_ducha_min, init.tempo_ducha_max) * init.unidade_de_tempo)
-        self.log("Terminou de tomar uma ducha.")
-        '''
-            IMPLEMENTE AQUI:
-            Liberar a ducha.
-        '''
-        if self.genero == 'F':
-            init.duchas_vest_fem.release()
-        else:
-            init.duchas_vest_masc.release()         
-
-    # Nadador aprendiz deve pegar uma prancha antes de entrar na piscina
-    def pegar_prancha(self):
-        '''
-            IMPLEMENTE AQUI:
-            O nadador aprendiz deve pegar uma prancha para nadar.
-        '''
-        init.pranchas.acquire()
-        self.log("Pegou uma prancha para nadar.")
-
-    # Nadador aprendiz devolve a prancha que estava usando para nadar
-    def devolver_prancha(self):
-        self.log("Devolvendo uma prancha.")
-        '''
-            IMPLEMENTE AQUI:
-            O nadador aprendiz deve devolver a prancha.
-        '''
-        init.pranchas.release()
+        self.log("Pegou um kit com equipamentos de proteção.")
         
-    # Nadador tenta encontrar uma raia para nadar    
-    def pegar_raia(self):
+    # Cliente pega um par de patins para usar a pista de patinação
+    def pegar_patins(self):
         '''
             IMPLEMENTE AQUI:
-            O nadador deve encontrar uma raia para nadar. Adultos precisam
-            de uma raia exclusiva, e 2 crianças podem compartilhar uma raia.
+            O cliente pega um par de patins para patinar no gelo.
         '''
-        with init.lock_piscina:
-            if self.crianca == False:
-                while init.raias_ocupadas > (init.quant_raias-1) :
-                    self.log("Piscina lotada. Aguardando raia ser liberada...")
-                    init.raia_livre.wait()
-                init.raias_ocupadas += 1
-            else:
-                while init.raias_ocupadas == init.quant_raias :
-                    self.log("Piscina lotada. Aguardando raia ser liberada...")
-                    init.raia_livre.wait()
-                init.raias_ocupadas += .5
-            init.piscina.append(self)
-            self.log("Conseguiu uma raia para nadar.")
-            self.log("Na piscina: " + str(init.piscina))
+        self.log("Pegou um par de patins.")
 
-    # Nadador libera a raia na qual estava nadando
-    def liberar_raia(self):
-        self.log("Liberando uma raia.")
+    # Cliente pega uma prancha de snowboard
+    def patinar(self):
+        self.log("Começou a patinar.")
         '''
             IMPLEMENTE AQUI:
-            O nadador deve liberar a raia.
+            O cliente vai patinar.
         '''
-        with init.lock_piscina:
-            init.piscina.remove(self)
-            if self.crianca == False:
-                init.raias_ocupadas -= 1
-            else:
-                init.raias_ocupadas -= .5
-            init.raia_livre.notify()
 
-    # Simula o tempo que o nadador fica na piscina nadando
-    def nadar(self):
-        self.log("Começou a nadar.")
-        sleep(randint(init.tempo_nadando_min, init.tempo_nadando_max) * init.unidade_de_tempo)
-        self.log("Terminou de nadar.")
+    # Cliente devolver os patins que estava usando
+    def devolver_patins(self):
+        '''
+            IMPLEMENTE AQUI:
+            O cliente devolve os patins que usou na pista de patinação.
+        '''
+        self.log("Devolveu um par de patins.")
+
+    # Cliente aguarda que haja lugar na pista de patinação         
+    def aguardar_lugar_pista(self):
+        '''
+            IMPLEMENTE AQUI:
+            O cliente deve aguardar que haja uma vaga para entrar na pista de patinação.
+        '''
+        self.log("Entrou na pista de patinação.")
+
+    # Cliente aguarda um lugar no teleférico
+    def pegar_teleferico(self):
+        '''
+            IMPLEMENTE AQUI:
+            O cliente deve aguardar que haja uma cadeira vaga para andar no teleférico.
+        '''
+        self.log("Pegou cadeira no teleférico.")
+
+    # Cliente deve aguardar a subida do teleférico
+    def aguardar_subida(self):
+        '''
+            IMPLEMENTE AQUI:
+            O cliente deve aguardar que o teleférico chegue ao topo da montanha.
+        '''        
+        self.log("Chegou ao topo da montanha.")
+
+    # Cliente deve aguardar a descida do teleférico 
+    def aguardar_descida(self):
+        '''
+            IMPLEMENTE AQUI:
+            O cliente deve aguardar que o teleférico termine de descer da montanha.
+        '''        
+        self.log("Desceu a montanha.")
+
+     # Cliente libera seu lugar no teleférico
+    def sair_teleferico(self):
+        '''
+            IMPLEMENTE AQUI:
+            O cliente libera a cadeira que usou para andar no teleférico.
+        '''
+        self.log("Liberou uma cadeira no teleférico.")
+        
+    # Cliente pega esquis
+    def pegar_esquis(self):
+        '''
+            IMPLEMENTE AQUI:
+            O cliente pega um par de esquis para usar.
+        '''        
+        self.log("Pegou esquis.")
+
+    # Cliente aguarda para poder esquiar na montanha
+    def aguardar_lugar_montanha_sul(self):
+        '''
+            IMPLEMENTE AQUI:
+            Aguardar que haja uma vaga para esquiar.
+        '''      
+        self.log("Tomando uma ducha...")
+      
+
+    # Cliente desce a montanha esquiando
+    def descer_esquiando(self):
+        self.log("Começa a descer a montanha esquiando.")
+        '''
+            IMPLEMENTE AQUI:
+            O cliente esquia até a base da montanha.
+        '''
+        self.log("Terminou de descer a montanha esquiando.")
+
+     # Cliente devolve os esquis
+    def devolver_esquis(self):
+        '''
+            IMPLEMENTE AQUI:
+            O cliente pega um par de esquis para usar.
+        '''        
+        self.log("Devolveu os esquis.")
+        
+    # Cliente pega uma prancha de snowboard
+    def pegar_snowboard(self):
+        '''
+            IMPLEMENTE AQUI:
+            O cliente pega uma prancha de snowboard.
+        '''
+        self.log("Pegou um snowboard.")
+        
+    # Cliente desce a montanha com uma prancha de snowboard
+    def descer_snowboard(self):
+        self.log("Começou a descer a pista de snowboard.")       
+        '''
+            IMPLEMENTE AQUI:
+            O cliente desce a montanha em uma prancha de snowboard.
+        '''
+        self.log("Desceu a pista de snowboard.")
+
+    # Cliente devolve uma prancha de snowboard
+    def devolver_snowboard(self):
+        '''
+            IMPLEMENTE AQUI:
+            O cliente devolve uma prancha de snowboard.
+        '''
+        self.log("Devolveu um snowboard.")
+
+    # Cliente aguarda formação da dupla
+    def formar_dupla(self):
+        '''
+            IMPLEMENTE AQUI:
+            O cliente aguarda que outro cliente forme uma dupla com ele.
+        '''
+        self.log("Formou uma dupla para descer a montanha no bobsled.")
+        
+    # Cliente aguarda um bobsled livre para descer a montanha
+    def pegar_bobsled(self):
+        '''
+            IMPLEMENTE AQUI:
+            O cliente aguarda que haja um bobsled livre para descer a montanha.
+        '''
+        self.log("Pegou um bobsled.")
+
+    # Cliente aguarda uma pista de bobsled livre para descer a montanha
+    def aguardar_pista_bobsled(self):
+        self.log("Aguarda por uma pista de bobsled.")
+        '''
+            IMPLEMENTE AQUI:
+            O cliente aguarda que haja uma pista de bobsled livre para descer a montanha.
+        '''
+        self.log("Conseguiu uma pista de bobsled.")
+
+     # Cliente desce a montanha de bobsled
+    def descer_bobsled(self):
+        self.log("Começou a descer a pista de bobsled.")
+        '''
+            IMPLEMENTE AQUI:
+            O cliente desce a pista de bobsled.
+        '''
+        self.log("Terminou de descer a pista de bobsled.")       
+ 
+   # Cliente devolve o bobsled que usou para descer a montanha
+    def devolver_bobsled(self):
+        '''
+            IMPLEMENTE AQUI:
+            O cliente devolveu o bobsled usado para descer a montanha.
+        '''
+        self.log("Devolveu um bobsled.")
+
+    # Cliente aguarda um trenó livre para descer a montanha
+    def pegar_treno(self):
+        '''
+            IMPLEMENTE AQUI:
+            O cliente aguarda que haja um trenó livre para descer a montanha.
+        '''
+        self.log("Pegou um trenó.")
+
+    # Cliente aguarda uma pista de trenó livre para descer a montanha
+    def aguardar_pista_treno(self):
+        self.log("Aguarda por uma pista de trenó.")
+        '''
+            IMPLEMENTE AQUI:
+            O cliente aguarda que haja uma pista de trenó livre para descer a montanha.
+        '''
+        self.log("Conseguiu uma pista de trenó.")
+
+     # Cliente desce a montanha de trenó
+    def descer_treno(self):
+        self.log("Começou a descer a pista de trenó.")
+        '''
+            IMPLEMENTE AQUI:
+            O cliente desce a pista de trenó.
+        '''
+        self.log("Terminou de descer a pista de trenó.")       
+ 
+   # Cliente devolve o trenó que usou para descer a montanha
+    def devolver_treno(self):
+        '''
+            IMPLEMENTE AQUI:
+            O cliente devolveu o trenó usado para descer a montanha.
+        '''
+        self.log("Devolveu um trenó.")
+        
+    # Simula o tempo de subida ou descida
+    def tempo_deslocamento(self):
+        sleep(randint(init.tempo_min, init.tempo_max) * init.unidade_de_tempo)
