@@ -3,6 +3,8 @@ from time import sleep
 from random import randint
 
 import init
+from atracao import *
+from equipamentos import *
 
 class Cliente(Thread):
     '''
@@ -45,7 +47,9 @@ class Cliente(Thread):
         comporte conforme a especificação contida no Moodle.
 
         Esses métodos são chamados no método run() da classe Cliente.
-      
+ 
+        Observação: Comente no código qual o objetivo de uma dada operação, 
+        ou conjunto de operações, para facilitar a correção do trabalho.           
     '''
     # Construtor do nadador
     # Argumentos indicam o gênero e se é criança e aprendiz
@@ -67,12 +71,7 @@ class Cliente(Thread):
     def run(self):
         '''
             NÃO ALTERE A ORDEM DAS CHAMADAS ABAIXO.
-
-            Você deve implementar os comportamentos dentro dos métodos invocados. 
-            Observação: Comente no código qual o objetivo de uma dada operação, 
-            ou conjunto de operações, para facilitar a correção do trabalho.
         '''
-
         self.log("Entrou no Winter Park.")
 
         self.pegar_equip_protecao()
@@ -156,6 +155,10 @@ class Cliente(Thread):
                 self.log("Saiu do Winter Park.")
                 return
 
+    # Simula o tempo de uso de uma atração
+    def tempo_atracao(self):
+        sleep(randint(init.tempo_atracao_min, init.tempo_atracao_max) * init.unidade_de_tempo)
+        
     # Cliente pega um par de patins para usar a pista de patinação
     def pegar_equip_protecao(self):
         '''
@@ -174,11 +177,8 @@ class Cliente(Thread):
 
     # Cliente pega uma prancha de snowboard
     def patinar(self):
-        self.log("Começou a patinar.")
-        '''
-            IMPLEMENTE AQUI:
-            O cliente vai patinar.
-        '''
+        self.log("Está patinando.")
+        self.tempo_atracao()
 
     # Cliente devolver os patins que estava usando
     def devolver_patins(self):
@@ -206,19 +206,13 @@ class Cliente(Thread):
 
     # Cliente deve aguardar a subida do teleférico
     def aguardar_subida(self):
-        '''
-            IMPLEMENTE AQUI:
-            O cliente deve aguardar que o teleférico chegue ao topo da montanha.
-        '''        
-        self.log("Chegou ao topo da montanha.")
+        self.tempo_atracao() 
+        self.log("Chegou ao topo da montanha de teleférico.")
 
     # Cliente deve aguardar a descida do teleférico 
     def aguardar_descida(self):
-        '''
-            IMPLEMENTE AQUI:
-            O cliente deve aguardar que o teleférico termine de descer da montanha.
-        '''        
-        self.log("Desceu a montanha.")
+        self.tempo_atracao()     
+        self.log("Desceu a montanha de teleférico.")
 
      # Cliente libera seu lugar no teleférico
     def sair_teleferico(self):
@@ -242,16 +236,13 @@ class Cliente(Thread):
             IMPLEMENTE AQUI:
             Aguardar que haja uma vaga para esquiar.
         '''      
-        self.log("Tomando uma ducha...")
+        self.log("Conseguiu lugar na montanha sul.")
       
 
     # Cliente desce a montanha esquiando
     def descer_esquiando(self):
         self.log("Começa a descer a montanha esquiando.")
-        '''
-            IMPLEMENTE AQUI:
-            O cliente esquia até a base da montanha.
-        '''
+        self.tempo_atracao()
         self.log("Terminou de descer a montanha esquiando.")
 
      # Cliente devolve os esquis
@@ -273,10 +264,7 @@ class Cliente(Thread):
     # Cliente desce a montanha com uma prancha de snowboard
     def descer_snowboard(self):
         self.log("Começou a descer a pista de snowboard.")       
-        '''
-            IMPLEMENTE AQUI:
-            O cliente desce a montanha em uma prancha de snowboard.
-        '''
+        self.tempo_atracao()
         self.log("Desceu a pista de snowboard.")
 
     # Cliente devolve uma prancha de snowboard
@@ -349,10 +337,7 @@ class Cliente(Thread):
      # Cliente desce a montanha de trenó
     def descer_treno(self):
         self.log("Começou a descer a pista de trenó.")
-        '''
-            IMPLEMENTE AQUI:
-            O cliente desce a pista de trenó.
-        '''
+        self.tempo_atracao()
         self.log("Terminou de descer a pista de trenó.")       
  
    # Cliente devolve o trenó que usou para descer a montanha
@@ -363,6 +348,4 @@ class Cliente(Thread):
         '''
         self.log("Devolveu um trenó.")
         
-    # Simula o tempo de subida ou descida
-    def tempo_deslocamento(self):
-        sleep(randint(init.tempo_min, init.tempo_max) * init.unidade_de_tempo)
+
