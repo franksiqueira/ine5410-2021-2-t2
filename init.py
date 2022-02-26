@@ -18,11 +18,9 @@ tempo_atracao_max           = 20
 capacidade_patinacao        = 6
 capacidade_teleferico       = 12
 capacidade_montanha_sul     = 8
-capacidade_bobsleds         = 1
-capacidade_trenos           = 4 
-nome_atracoes               = ["pista de patinação", "teleférico", "esqui", "snowboard","bobsled","trenó"]
-capacidade_atracoes         = [capacidade_patinacao, capacidade_teleferico, capacidade_montanha_sul, 
-                               capacidade_montanha_sul, capacidade_bobsleds, capacidade_trenos]
+capacidade_montanha_norte   = 5 
+nome_atracoes               = ["pista de patinação", "teleférico", "pista esqui e snowboard","pistas bobsled e trenó"]
+capacidade_atracoes         = [capacidade_patinacao, capacidade_teleferico, capacidade_montanha_sul, capacidade_montanha_norte]
 atracoes                    = [] 
 
 # Equipamentos do parque
@@ -96,7 +94,7 @@ if __name__ == "__main__":
     # IMPLEMENTE AQUI: crie outras varíaveis, se necessário
 
     # Criação das atrações
-    for i in range(1,7):
+    for i in range(1,5):
         atr = Atracao(nome_atracoes[i-1], capacidade_atracoes[i-1])
         atracoes.append(atr)
 

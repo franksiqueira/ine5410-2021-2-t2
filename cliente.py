@@ -151,6 +151,8 @@ class Cliente(Thread):
                                     break                   
 
             if randint(1,5) == 1: 
+                # Devolve o kit de equipamentos de proteção
+                self.devolver_equip_protecao()
                 # Vai embora
                 self.log("Saiu do Winter Park.")
                 return
@@ -159,13 +161,21 @@ class Cliente(Thread):
     def tempo_atracao(self):
         sleep(randint(init.tempo_atracao_min, init.tempo_atracao_max) * init.unidade_de_tempo)
         
-    # Cliente pega um par de patins para usar a pista de patinação
+    # Cliente pega um kit com os equipamentos de proteção
     def pegar_equip_protecao(self):
         '''
             IMPLEMENTE AQUI:
             O cliente pega um kit com os equipamentos de proteção.
         '''
         self.log("Pegou um kit com equipamentos de proteção.")
+        
+    # Cliente devolve um kit com os equipamentos de proteção
+    def devolver_equip_protecao(self):
+        '''
+            IMPLEMENTE AQUI:
+            O cliente devolve um kit com os equipamentos de proteção.
+        '''
+        self.log("Devolveu um kit com equipamentos de proteção.")
         
     # Cliente pega um par de patins para usar a pista de patinação
     def pegar_patins(self):
