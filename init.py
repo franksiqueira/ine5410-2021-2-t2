@@ -103,7 +103,7 @@ if __name__ == "__main__":
         equipamentos.append(equip)
 
     # Criação dos funcionários
-    for i in range(1,6):
+    for i in range(1,7):
         func = Funcionario(i,equipamentos[i-1])
         func.start()
         funcionarios.append(func)
