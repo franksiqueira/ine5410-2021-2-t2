@@ -107,6 +107,7 @@ class Cliente(Thread):
                                 if randint(1,2) == 1:
                                     self.pegar_teleferico()
                                     self.aguardar_subida()
+                                    self.sair_teleferico()                     
                                 else:
                                     self.devolver_esquis()
                                     break
@@ -119,6 +120,7 @@ class Cliente(Thread):
                                 if randint(1,2) == 1:
                                     self.pegar_teleferico()
                                     self.aguardar_subida()
+                                    self.sair_teleferico()                                                       
                                 else:
                                     self.devolver_snowboard()
                                     break                                             
@@ -135,6 +137,7 @@ class Cliente(Thread):
                                 if randint(1,2) == 1:
                                     self.pegar_teleferico()
                                     self.aguardar_subida()
+                                    self.sair_teleferico()                                                         
                                 else:
                                     break                        
                         else:
@@ -147,6 +150,7 @@ class Cliente(Thread):
                                 if randint(1,2) == 1:
                                     self.pegar_teleferico()
                                     self.aguardar_subida()
+                                    self.sair_teleferico()                                                         
                                 else:
                                     break                   
 
