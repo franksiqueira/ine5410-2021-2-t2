@@ -51,8 +51,8 @@ class Cliente(Thread):
         Observação: Comente no código qual o objetivo de uma dada operação, 
         ou conjunto de operações, para facilitar a correção do trabalho.           
     '''
-    # Construtor do nadador
-    # Argumentos indicam o gênero e se é criança e aprendiz
+    # Construtor do cliente
+    # ALTERADO em 5/03 (correção do comentário)
     def __init__(self, id):
         self.id     = id
 
@@ -107,7 +107,7 @@ class Cliente(Thread):
                                 if randint(1,2) == 1:
                                     self.pegar_teleferico()
                                     self.aguardar_subida()
-                                    self.sair_teleferico()                     
+                                    self.sair_teleferico()             # ALTERADO 2/03         
                                 else:
                                     self.devolver_esquis()
                                     break
@@ -120,7 +120,7 @@ class Cliente(Thread):
                                 if randint(1,2) == 1:
                                     self.pegar_teleferico()
                                     self.aguardar_subida()
-                                    self.sair_teleferico()                                                       
+                                    self.sair_teleferico()             # ALTERADO 2/03         
                                 else:
                                     self.devolver_snowboard()
                                     break                                             
@@ -128,29 +128,29 @@ class Cliente(Thread):
                         # Vai para o lado norte - trenó e bobsled
                         if randint(1,3) == 1:
                             # Bobsled
-                            self.formar_dupla()
-                            self.pegar_bobsled()
-                            while True:
+                            while True:                         # ALTERADO 5/03
+                                self.formar_dupla()             # ALTERADO 5/03
+                                self.pegar_bobsled()            # ALTERADO 5/03
                                 self.aguardar_pista_bobsled()  
                                 self.descer_bobsled()  
                                 self.devolver_bobsled()
                                 if randint(1,2) == 1:
                                     self.pegar_teleferico()
                                     self.aguardar_subida()
-                                    self.sair_teleferico()                                                         
+                                    self.sair_teleferico()      # ALTERADO 2/03               
                                 else:
                                     break                        
                         else:
                             # Trenó   
-                            self.pegar_treno()
-                            while True:
+                            while True:                         # ALTERADO 5/03
+                                self.pegar_treno()              # ALTERADO 5/03
                                 self.aguardar_pista_treno()  
                                 self.descer_treno()  
                                 self.devolver_treno()
                                 if randint(1,2) == 1:
                                     self.pegar_teleferico()
                                     self.aguardar_subida()
-                                    self.sair_teleferico()                                                         
+                                    self.sair_teleferico()      # ALTERADO 2/03               
                                 else:
                                     break                   
 
