@@ -43,7 +43,7 @@ unidade_de_tempo            = 0.1 # 100ms
 
 # Parâmetros de funcionamento do funcionário
 tempo_limpeza_equipamento   = 4
-tempo_descanso              = 20
+# ALTERADO 5/03
 funcionarios                = [] # Lista com todos os funcionários do parque
 num_equip_turno             = 50 # Número de equipamentos limpos a cada turno
 tempo_descanso              = 10 # Tempo de descanso entre dois turnos de trabalho
@@ -103,7 +103,7 @@ if __name__ == "__main__":
         equipamentos.append(equip)
 
     # Criação dos funcionários
-    for i in range(1,7):
+    for i in range(1,7):                            # ALTERADO 1/03
         func = Funcionario(i,equipamentos[i-1])
         func.start()
         funcionarios.append(func)
@@ -123,7 +123,7 @@ if __name__ == "__main__":
         tempo += intervalo
 
     # Faça o funcionário parar de trabalhar assim que terminar o que estiver fazendo  
-    for i in range(1,6):
+    for i in range(1,7):                            # ALTERADO 1/03
         funcionarios[i-1].trabalhando = False
 
     # Aguarde a finalização (término) de todos os clientes e funcionários 
@@ -131,6 +131,6 @@ if __name__ == "__main__":
     for cliente in clientes:
         cliente.join()
 
-    for i in range(1,6):
+    for i in range(1,7):                            # ALTERADO 1/03
         funcionarios[i-1].join()
 
