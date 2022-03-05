@@ -52,11 +52,12 @@ class Cliente(Thread):
         ou conjunto de operações, para facilitar a correção do trabalho.           
     '''
     # Construtor do cliente
-    # ALTERADO em 5/03 (correção do comentário)
+    # blah blah ALTERADO em 5/03 (correção do comentário)
     def __init__(self, id):
         self.id     = id
 
         super().__init__(name=("Cliente " + str(id)))
+        # NOVO 
 
     # Função que imprime mensagens de log
     def log(self, mensagem):
